@@ -31,7 +31,7 @@ def delete(id):
     return redirect('/')
 
 @app.route('/update_product/<int:id>',methods=["GET","POST"])
-def update(id):
+def update_product(id):
     user = User1.query.get_or_404(id)
     if request.method == 'POST':
         user.firstname = request.form['firstname']
@@ -91,6 +91,14 @@ def add_movement():
     db.session.add(newMovement)
     db.session.commit()
     return redirect('/')
+
+@app.route('/delete_movement/<int:id>')
+def delete_movement(id):
+    task_to_delete = Movement.query.get_or_404(id)
+    db.session.delete(task_to_delete)
+    db.session.commit()
+    return redirect('/')
+
 
 
 

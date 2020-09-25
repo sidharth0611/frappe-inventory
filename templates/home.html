@@ -8,7 +8,7 @@
             <form action="/" method="POST" class="form-group">
             {% endif %}
             {% if page == 'updatehome' %}
-            <form action="/update/{{user.id}}" method="POST" class="form-group">
+            <form action="/update_product/{{user.id}}" method="POST" class="form-group">
             {% endif %}
             
             
@@ -128,8 +128,8 @@
         <table class="table">
             <thead>
                 <th>id</th>
-                <th>firstname</th>
-                <th>email</th>
+                <th>product_name</th>
+                <th>quantity</th>
                 <th>to_location</th>
                 <th>from_location</th>
                 <th>timestamp</th>
@@ -143,6 +143,9 @@
                     <td>{{ i.Movement.to_location }}</td>
                     <td>{{ i.Movement.from_location }}</td>
                     <td>{{ i.Movement.timestamp }}</td>
+                    <td>
+                        <a href='/delete_movement/{{i.User1.id}}' class="btn btn-sm btn-dark">Delete</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
