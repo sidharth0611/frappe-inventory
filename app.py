@@ -6,10 +6,11 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
 class User1(db.Model):
     id = db.Column(db.Integer,primary_key=True, autoincrement=True)
-    firstname = db.Column(db.String(200))
-    lastname = db.Column(db.String(200))
-    email = db.Column(db.String(200))
-    password = db.Column(db.String(200))
+    product_name = db.Column(db.String(200))
+    product_type = db.Column(db.String(200))
+    quantity = db.Column(db.String(200))
+    warehouse = db.Column(db.String(200))
+    
     
 
 class Location(db.Model):
@@ -22,7 +23,7 @@ class Movement(db.Model):
     to_location = db.Column(db.String(200))
     from_location = db.Column(db.String(200))
     product_id = db.Column(db.Integer)
-
+    
 @app.route('/delete_product/<int:id>')
 def delete(id):
     task_to_delete = User1.query.get_or_404(id)
@@ -34,10 +35,10 @@ def delete(id):
 def update_product(id):
     user = User1.query.get_or_404(id)
     if request.method == 'POST':
-        user.firstname = request.form['firstname']
-        user.lastname = request.form['lastname']
-        user.email = request.form['email']
-        user.password = request.form['password']
+        user.product_name = request.form['product_name']
+        user.product_type = request.form['product_type']
+        user.quantity = request.form['quantity']
+        user.warehouse = request.form['warehouse']
         db.session.commit()
         return redirect('/')
     else:
@@ -53,14 +54,14 @@ def get():
             print(i)
         movements = db.session.query(User1, Movement).filter(User1.id == Movement.product_id).all()
         page ='home'
-        user = User1(id='',firstname='',lastname='',email='',password='')
+        user = User1(id='',product_name='',product_type='',quantity='',warehouse='')
         return render_template('home.html',user1s=user1s,locations=locations,movements=movements,page=page,user=user)
     else:
-        firstname = request.form['firstname']
-        lastname = request.form['lastname']
-        email = request.form['email']
-        password = request.form['password']
-        newUser1 = User1(firstname=firstname,lastname=lastname,email=email,password=password)
+        product_name = request.form['product_name']
+        product_type = request.form['product_type']
+        quantity = request.form['quantity']
+        warehouse = request.form['warehouse']
+        newUser1 = User1(product_name=product_name,product_type=product_type,quantity=quantity,warehouse=warehouse)
         db.session.add(newUser1)
         db.session.commit()
         return redirect('/')

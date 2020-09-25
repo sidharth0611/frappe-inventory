@@ -14,19 +14,19 @@
             
             <div class="form-group">
                 <label for="">product_name</label>
-                <input type="text" name="firstname" class="form-control" value={{user.firstname}}>
+                <input type="text" name="product_name" class="form-control" value={{user.product_name}}>
             </div>
             <div class="form-group">
                 <label for="">product_type</label>
-                <input type="text" name="lastname" class="form-control" value={{user.lastname}}>
+                <input type="text" name="product_type" class="form-control" value={{user.product_type}}>
             </div>
             <div class="form-group">
                 <label for="">quantity</label>
-                <input type="text" name="email" class="form-control" value={{user.email}}>
+                <input type="text" name="quantity" class="form-control" value={{user.quantity}}>
             </div>
             <div class="form-group">
                 <label for="">warehouse</label>
-                <input type="text" name="password" class="form-control" value={{user.password}}>
+                <input type="text" name="warehouse" class="form-control" value={{user.warehouse}}>
             </div>
             <button class="btn btn-block btn-dark">Submit</button>
         
@@ -47,10 +47,10 @@
             <tbody>
                 {% for i in user1s %}
                 <tr>
-                    <td>{{ i.firstname }}</td>
-                    <td>{{ i.lastname }}</td>
-                    <td>{{ i.email }}</td>
-                    <td>{{ i.password }}</td>
+                    <td>{{ i.product_name }}</td>
+                    <td>{{ i.product_type }}</td>
+                    <td>{{ i.quantity }}</td>
+                    <td>{{ i.warehouse }}</td>
                     <td>
                         <a href='/delete_product/{{i.id}}' class="btn btn-sm btn-dark">Delete</a>
                     </td>
@@ -133,13 +133,14 @@
                 <th>to_location</th>
                 <th>from_location</th>
                 <th>timestamp</th>
+                <th>delete</th>
             </thead>
             <tbody>
                 {% for i in movements %}
                 <tr>
                     <td>{{ i.User1.id }}</td>
-                    <td>{{ i.User1.firstname }}</td>
-                    <td>{{ i.User1.email }}</td>
+                    <td>{{ i.User1.product_name }}</td>
+                    <td>{{ i.User1.quantity }}</td>
                     <td>{{ i.Movement.to_location }}</td>
                     <td>{{ i.Movement.from_location }}</td>
                     <td>{{ i.Movement.timestamp }}</td>
