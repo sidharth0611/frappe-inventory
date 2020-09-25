@@ -49,13 +49,12 @@ def get():
     if request.method == "GET":
         user1s = User1.query.all()
         locations = Location.query.all()
-        movements = db.engine.execute('select user1.id, user1.firstname, user1.email, movement.timestamp, movement.to_location, movement.from_location, movement.product_id from user1 inner join movement on user1.id = movement.product_id')
-        for i in movements:
+        for i in locations:
             print(i)
+        movements = db.session.query(User1, Movement).filter(User1.id == Movement.product_id).all()
         page ='home'
-        user = User1(firstname='',lastname='',email='',password='')
-        location = Location(id='',location_name='')
-        return render_template('home.html',user1s=user1s,locations=locations,page=page,user=user,location=location)
+        user = User1(id='',firstname='',lastname='',email='',password='')
+        return render_template('home.html',user1s=user1s,locations=locations,movements=movements,page=page,user=user)
     else:
         firstname = request.form['firstname']
         lastname = request.form['lastname']
