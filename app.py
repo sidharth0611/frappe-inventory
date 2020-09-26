@@ -10,6 +10,7 @@ class User1(db.Model):
     product_type = db.Column(db.String(200))
     quantity = db.Column(db.String(200))
     warehouse = db.Column(db.String(200))
+    movements = db.relationship('Movement', backref="user2")
     
     
 
@@ -22,7 +23,7 @@ class Movement(db.Model):
     timestamp = db.Column(db.String(200))
     to_location = db.Column(db.String(200))
     from_location = db.Column(db.String(200))
-    product_id = db.Column(db.Integer)
+    product_id = db.Column(db.Integer, db.ForeignKey('user1.id'))
     
 @app.route('/delete_product/<int:id>')
 def delete(id):
@@ -52,7 +53,7 @@ def get():
         locations = Location.query.all()
         for i in locations:
             print(i)
-        movements = db.session.query(User1, Movement).filter(User1.id == Movement.product_id).all()
+        movements = db.session.query(User1, Movement).filter(User1.id == Movement.product_id ).all()
         page ='home'
         user = User1(id='',product_name='',product_type='',quantity='',warehouse='')
         return render_template('home.html',user1s=user1s,locations=locations,movements=movements,page=page,user=user)
@@ -99,7 +100,6 @@ def delete_movement(id):
     db.session.delete(task_to_delete)
     db.session.commit()
     return redirect('/')
-
 
 
 
