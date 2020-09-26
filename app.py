@@ -13,10 +13,12 @@ class User1(db.Model):
     movements = db.relationship('Movement', backref="user2")
     
     
+    
 
 class Location(db.Model):
     id = db.Column(db.Integer,primary_key=True, autoincrement=True)
     location_name = db.Column(db.String(200))
+
 
 class Movement(db.Model):
     id = db.Column(db.Integer, primary_key=True)

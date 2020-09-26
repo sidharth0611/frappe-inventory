@@ -112,11 +112,19 @@
                 </div>
                 <div class="form-group">
                     <label for="">to_location</label>
-                    <input type="text" name="to_location" class="form-control" >
+                    <select class="form-control" name="to_location" id="to_location">
+                        {% for i in locations %}
+                        <option value="{{i.location_name}}">{{i.location_name}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="">from_location</label>
-                    <input type="text" name="from_location" class="form-control" >
+                    <select class="form-control" name="from_location" id="from_location">
+                        {% for i in locations %}
+                        <option value="{{i.location_name}}">{{i.location_name}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="">product_id</label>
