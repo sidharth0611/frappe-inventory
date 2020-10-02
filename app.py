@@ -39,11 +39,35 @@ def delete(id):
 
 @app.route('/report/<int:id>',methods=["GET"])
 def report(id):
-    abc= db.session.query(User1).filter(User1.id == id).all()
-    xyz= db.session.query(User1,Movement).filter(Movement.product_id == id, User1.id == id).all()
-    ghi= db.session.query(db.func.sum(Movement.quantity)/2).filter(Movement.from_location == User1.warehouse, Movement.product_id == id).scalar()
-    print(ghi)
-    return render_template('report.html',xyz=xyz,abc=abc)
+    user_info= db.session.query(User1).filter(User1.id == id).all()
+    locations = Location.query.all()
+    location_info= db.session.query(Location).filter(Location.location_name != user_info[0].warehouse).all()
+    movement_info= db.session.query(User1,Movement).filter(Movement.product_id == id, User1.id == id).all()
+    add_from= db.session.query(db.func.sum(Movement.quantity)/2).filter(Movement.from_location == User1.warehouse, Movement.product_id == id).scalar()
+    add_to= db.session.query(db.func.sum(Movement.quantity)/2).filter(Movement.to_location == User1.warehouse, Movement.product_id == id).scalar()
+    for i in movement_info:
+        y = int(i.User1.quantity) + add_to - add_from
+    final_repo=[]
+    for i in locations:
+        if i.location_name != user_info[0].warehouse:
+            move_from= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.from_location == i.location_name, Movement.product_id == id).scalar()
+            move_to= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.to_location == i.location_name, Movement.product_id == id).scalar()
+            m = move_to - move_from
+            final_repo.append(m) 
+            print(m)
+    print(user_info[0].warehouse)
+    final_location=[]
+    for i in location_info:
+        final_location.append(i.location_name)
+    print(final_location)
+    res={}
+    for key in final_location:
+        for value in final_repo:
+            res[key] = value
+            final_repo.remove(value)
+            break 
+    print(res)
+    return render_template('report.html',user_info=user_info,movement_info=movement_info,y=y,final_repo=final_repo,location_info=location_info,res=res)
 
 @app.route('/update_product/<int:id>',methods=["GET","POST"])
 def update_product(id):

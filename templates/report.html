@@ -1,41 +1,44 @@
 {% extends 'index.html' %}
 {% block content %}
-<div class="row"></div>
-    <div class="col-lg-8">
-        <table class="table">
+<div class="row">
+    <div class="col-lg-3">
+        {% for i in user_info %}
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>product_name - </b>{{ i.product_name }}</li>
+            <li class="list-group-item"><b>product_id - </b>{{ i.id }}</li>
+            <li class="list-group-item"><b>warehouse - </b>{{ i.warehouse }}</li>
+            <li class="list-group-item"><b>prduction_quantity - </b>{{ i.quantity }}</li>
+        </ul>
+        {% endfor %}
+    </div>
+    <div class="col-lg-6">
+        <table class="table table-bordered">
             <thead>
-                <th>movement_id</th>
+                <th>to_location</th>
+                <th>from_location</th>
                 <th>quantity_displaced</th>
                 <th>timestamp</th>
-                <th>from_location</th>
-                <th>to_location</th>
-                <th>warehouse</th>
-                <th>product_name</th>
-                <th>production_quantity</th>
             </thead>
             <tbody>
-                {% for i in xyz %}
+                {% for i in movement_info %}
                 <tr>
-                    <td>{{ i.Movement.id }}</td>
+                    <td>{{ i.Movement.to_location }}</td>
+                    <td>{{ i.Movement.from_location }}</td>
                     <td>{{ i.Movement.quantity }}</td>
                     <td>{{ i.Movement.timestamp }}</td>
-                    <td>{{ i.Movement.from_location }}</td>
-                    <td>{{ i.Movement.to_location }}</td>
-                    <td>{{ i.User1.warehouse }}</td>
-                    <td>{{ i.User1.product_name }}</td>
-                    <td>{{ i.User1.quantity }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        
-        
     </div>
-    <div>
-        {% for i in abc %}
-            <h1>{{ i.product_name }}</h1>
-            <h1>{{ i.warehouse }}</h1>
-        {% endfor %}
+    <div class="col-lg-3">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>warehouse - </b>{{ y }}</li>
+            {% for key, value in res.items() %}
+            <li class="list-group-item"><b>{{ key }} - </b>{{ value }}</li>
+            {% endfor %}
+
+        </ul>
     </div>
 </div>
 {% endblock %}
