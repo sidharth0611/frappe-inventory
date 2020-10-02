@@ -1,0 +1,41 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="row"></div>
+    <div class="col-lg-8">
+        <table class="table">
+            <thead>
+                <th>movement_id</th>
+                <th>quantity_displaced</th>
+                <th>timestamp</th>
+                <th>from_location</th>
+                <th>to_location</th>
+                <th>warehouse</th>
+                <th>product_name</th>
+                <th>production_quantity</th>
+            </thead>
+            <tbody>
+                {% for i in xyz %}
+                <tr>
+                    <td>{{ i.Movement.id }}</td>
+                    <td>{{ i.Movement.quantity }}</td>
+                    <td>{{ i.Movement.timestamp }}</td>
+                    <td>{{ i.Movement.from_location }}</td>
+                    <td>{{ i.Movement.to_location }}</td>
+                    <td>{{ i.User1.warehouse }}</td>
+                    <td>{{ i.User1.product_name }}</td>
+                    <td>{{ i.User1.quantity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        
+    </div>
+    <div>
+        {% for i in abc %}
+            <h1>{{ i.product_name }}</h1>
+            <h1>{{ i.warehouse }}</h1>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

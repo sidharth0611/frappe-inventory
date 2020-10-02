@@ -3,7 +3,7 @@
 <br>
 <div class="row">
     <div class="col-lg-4">
-        <div class="card">
+        <div class="card" >
             <h5 class="card-title">Product-Details</h5>
             {% if page == 'home' %}
             <form action="/" method="POST" class="form-group">
@@ -37,17 +37,20 @@
     <div class="col-lg-8">
         <table class="table">
             <thead>
+                <th>product_id</th>
                 <th>product_name</th>
                 <th>product_type</th>
                 <th>quantity</th>
                 <th>warehouse</th>
                 <th>Delete</th>
                 <th>Update</th>
+                <th>Report</th>
 
             </thead>
             <tbody>
                 {% for i in user1s %}
                 <tr>
+                    <td>{{ i.id }}</td>
                     <td>{{ i.product_name }}</td>
                     <td>{{ i.product_type }}</td>
                     <td>{{ i.quantity }}</td>
@@ -57,6 +60,9 @@
                     </td>
                     <td>
                         <a href='/update_product/{{i.id}}' class="btn btn-sm btn-dark">Update</a>
+                    </td>
+                    <td>
+                        <a href='/report/{{i.id}}' class="btn btn-sm btn-dark">Report</a>
                     </td>
 
                 </tr>
@@ -68,7 +74,7 @@
 <br>
 <div class="row">
     <div class="col-lg-4">
-        <div class="card">
+        <div class="card" >
             <h5 class="card-title">Location</h5>
             <form method="POST" action="/add_location">
                 <div class="form-group">
@@ -105,12 +111,16 @@
 <br>
 <div class="row">
     <div class="col-lg-4">
-        <div class="card">
+        <div class="card" >
             <h5 class="card-title">Movements</h5>
             <form method="POST" action="/add_movement">
                 <div class="form-group">
                     <label for="">timestamp</label>
                     <input type="text" name="timestamp" class="form-control" >
+                </div>
+                <div class="form-group">
+                    <label for="">quantity</label>
+                    <input type="text" name="quantity" class="form-control" >
                 </div>
                 <div class="form-group">
                     <label for="">to_location</label>
@@ -152,7 +162,7 @@
                 <tr>
                     <td>{{ i.User1.id }}</td>
                     <td>{{ i.User1.product_name }}</td>
-                    <td>{{ i.User1.quantity }}</td>
+                    <td>{{ i.Movement.quantity }}</td>
                     <td>{{ i.Movement.to_location }}</td>
                     <td>{{ i.Movement.from_location }}</td>
                     <td>{{ i.Movement.timestamp }}</td>
@@ -165,4 +175,7 @@
         </table>
     </div>
 </div>
+<br>
+
+
 {% endblock %}
