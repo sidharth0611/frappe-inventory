@@ -33,7 +33,7 @@
     </div>
     <div class="col-lg-3">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>Warehouse - </b>{{ y }}</li>
+            <li class="list-group-item"><b>Warehouse({{ product_info[0].warehouse }}) - </b>{{ warehouse_quant }}</li>
             {% for key, value in res.items() %}
             <li class="list-group-item"><b>{{ key }} - </b>{{ value }}</li>
             {% endfor %}

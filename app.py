@@ -43,16 +43,14 @@ def report(id):
     locations = Location.query.all()
     location_info= db.session.query(Location).filter(Location.location_name != product_info[0].warehouse).all()
     movement_info= db.session.query(Product,Movement).filter(Movement.product_id == id, Product.id == id).all()
-    add_from= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.from_location == Product.warehouse, Movement.product_id == id).scalar()
-    add_to= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.to_location == Product.warehouse, Movement.product_id == id).scalar()
-    for i in movement_info:
-        y = int(i.Product.quantity) + add_to - add_from
+    warehouse_quant = int(product_info[0].quantity)
     final_repo=[]
     for i in locations:
         if i.location_name != product_info[0].warehouse:
             move_from= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.from_location == i.location_name, Movement.product_id == id).scalar()
             move_to= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.to_location == i.location_name, Movement.product_id == id).scalar()
             m = move_to - move_from
+            warehouse_quant = warehouse_quant - m
             final_repo.append(m) 
     final_location=[]
     for i in location_info:
@@ -63,7 +61,7 @@ def report(id):
             res[key] = value
             final_repo.remove(value)
             break 
-    return render_template('report.html',product_info=product_info,movement_info=movement_info,y=y,final_repo=final_repo,location_info=location_info,res=res)
+    return render_template('report.html',product_info=product_info,movement_info=movement_info,final_repo=final_repo,location_info=location_info,res=res,warehouse_quant=warehouse_quant)
 
 # function to update product
 @app.route('/update_product/<int:id>',methods=["GET","POST"])
