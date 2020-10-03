@@ -4,48 +4,46 @@
 <div class="row">
     <div class="col-lg-4">
         <div class="card" >
-            <h5 class="card-title">Product-Details</h5>
-            {% if page == 'home' %}
-            <form action="/" method="POST" class="form-group">
-            {% endif %}
-            {% if page == 'updatehome' %}
-            <form action="/update_product/{{user.id}}" method="POST" class="form-group">
-            {% endif %}
-            
-            
-            <div class="form-group">
-                <label for="">product_name</label>
-                <input type="text" name="product_name" class="form-control" value={{user.product_name}}>
+            <div class="card-body">
+                <h5 class="card-title">Product-Details</h5>
+                {% if page == 'home' %}
+                <form action="/" method="POST" class="form-group">
+                {% endif %}
+                {% if page == 'updatehome' %}
+                <form action="/update_product/{{user.id}}" method="POST" class="form-group">
+                {% endif %}
+                    <div class="form-group">
+                        <label for="">Product Name</label>
+                        <input type="text" name="product_name" class="form-control" value={{user.product_name}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Product Type</label>
+                        <input type="text" name="product_type" class="form-control" value={{user.product_type}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Quantity</label>
+                        <input type="text" name="quantity" class="form-control" value={{user.quantity}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Warehouse</label>
+                        <input type="text" name="warehouse" class="form-control" value={{user.warehouse}}>
+                    </div>
+                    <button class="btn btn-block btn-dark">Submit</button>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="">product_type</label>
-                <input type="text" name="product_type" class="form-control" value={{user.product_type}}>
-            </div>
-            <div class="form-group">
-                <label for="">quantity</label>
-                <input type="text" name="quantity" class="form-control" value={{user.quantity}}>
-            </div>
-            <div class="form-group">
-                <label for="">warehouse</label>
-                <input type="text" name="warehouse" class="form-control" value={{user.warehouse}}>
-            </div>
-            <button class="btn btn-block btn-dark">Submit</button>
-        
-            </form>
         </div>
     </div>
     <div class="col-lg-8">
         <table class="table">
             <thead>
-                <th>product_id</th>
-                <th>product_name</th>
-                <th>product_type</th>
-                <th>quantity</th>
-                <th>warehouse</th>
+                <th>Product Id</th>
+                <th>Product Name</th>
+                <th>Product Type</th>
+                <th>Quantity</th>
+                <th>Warehouse</th>
                 <th>Delete</th>
                 <th>Update</th>
                 <th>Report</th>
-
             </thead>
             <tbody>
                 {% for i in user1s %}
@@ -64,7 +62,6 @@
                     <td>
                         <a href='/report/{{i.id}}' class="btn btn-sm btn-dark">Report</a>
                     </td>
-
                 </tr>
                 {% endfor %}
             </tbody>
@@ -75,23 +72,24 @@
 <div class="row">
     <div class="col-lg-4">
         <div class="card" >
-            <h5 class="card-title">Location</h5>
-            <form method="POST" action="/add_location">
-                <div class="form-group">
-                    <label for="">location name</label>
-                    <input type="text" name="location_name" class="form-control" >
-                </div>
-                <button class="btn btn-block btn-dark">Submit</button>
-            </form>
+            <div class="card-body">
+                <h5 class="card-title">Location</h5>
+                <form method="POST" action="/add_location">
+                    <div class="form-group">
+                        <label for="">Location Name</label>
+                        <input type="text" name="location_name" class="form-control" >
+                    </div>
+                    <button class="btn btn-block btn-dark">Submit</button>
+                </form>
+            </div>
         </div>
     </div>
     <div class="col-lg-8">
         <table class="table">
             <thead>
-                <th>id</th>
-                <th>location_name</th>
-                <th>delete</th>
-
+                <th>Id</th>
+                <th>Location Name</th>
+                <th>Delete</th>
             </thead>
             <tbody>
                 {% for i in locations %}
@@ -101,7 +99,6 @@
                     <td>
                         <a href='/delete_location/{{i.id}}' class="btn btn-sm btn-dark">Delete</a>
                     </td>
-
                 </tr>
                 {% endfor %}
             </tbody>
@@ -112,50 +109,52 @@
 <div class="row">
     <div class="col-lg-4">
         <div class="card" >
-            <h5 class="card-title">Movements</h5>
-            <form method="POST" action="/add_movement">
-                <div class="form-group">
-                    <label for="">timestamp</label>
-                    <input type="text" name="timestamp" class="form-control" >
-                </div>
-                <div class="form-group">
-                    <label for="">quantity</label>
-                    <input type="text" name="quantity" class="form-control" >
-                </div>
-                <div class="form-group">
-                    <label for="">to_location</label>
-                    <select class="form-control" name="to_location" id="to_location">
-                        {% for i in locations %}
-                        <option value="{{i.location_name}}">{{i.location_name}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="">from_location</label>
-                    <select class="form-control" name="from_location" id="from_location">
-                        {% for i in locations %}
-                        <option value="{{i.location_name}}">{{i.location_name}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="">product_id</label>
-                    <input type="text" name="product_id" class="form-control" >
-                </div>
-                <button class="btn btn-block btn-dark">Submit</button>
-            </form>
+            <div class="card-body">
+                <h5 class="card-title">Movements</h5>
+                <form method="POST" action="/add_movement">
+                    <div class="form-group">
+                        <label for="">Timestamp</label>
+                        <input type="text" name="timestamp" class="form-control" >
+                    </div>
+                    <div class="form-group">
+                        <label for="">Quantity</label>
+                        <input type="text" name="quantity" class="form-control" >
+                    </div>
+                    <div class="form-group">
+                        <label for="">To Location</label>
+                        <select class="form-control" name="to_location" id="to_location">
+                            {% for i in locations %}
+                            <option value="{{i.location_name}}">{{i.location_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">From Location</label>
+                        <select class="form-control" name="from_location" id="from_location">
+                            {% for i in locations %}
+                            <option value="{{i.location_name}}">{{i.location_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Product Id</label>
+                        <input type="text" name="product_id" class="form-control" >
+                    </div>
+                    <button class="btn btn-block btn-dark">Submit</button>
+                </form>
+            </div>
         </div>
     </div>
     <div class="col-lg-8">
         <table class="table">
             <thead>
-                <th>id</th>
-                <th>product_name</th>
-                <th>quantity</th>
-                <th>to_location</th>
-                <th>from_location</th>
-                <th>timestamp</th>
-                <th>delete</th>
+                <th>Id</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>To Location</th>
+                <th>From Location</th>
+                <th>Timestamp</th>
+                <th>Delete</th>
             </thead>
             <tbody>
                 {% for i in movements %}
@@ -176,6 +175,4 @@
     </div>
 </div>
 <br>
-
-
 {% endblock %}

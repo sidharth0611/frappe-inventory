@@ -4,20 +4,20 @@
     <div class="col-lg-3">
         {% for i in user_info %}
         <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>product_name - </b>{{ i.product_name }}</li>
-            <li class="list-group-item"><b>product_id - </b>{{ i.id }}</li>
-            <li class="list-group-item"><b>warehouse - </b>{{ i.warehouse }}</li>
-            <li class="list-group-item"><b>prduction_quantity - </b>{{ i.quantity }}</li>
+            <li class="list-group-item"><b>Product Name - </b>{{ i.product_name }}</li>
+            <li class="list-group-item"><b>Product Id - </b>{{ i.id }}</li>
+            <li class="list-group-item"><b>Warehouse - </b>{{ i.warehouse }}</li>
+            <li class="list-group-item"><b>Prduction Quantity - </b>{{ i.quantity }}</li>
         </ul>
         {% endfor %}
     </div>
     <div class="col-lg-6">
         <table class="table table-bordered">
             <thead>
-                <th>to_location</th>
-                <th>from_location</th>
-                <th>quantity_displaced</th>
-                <th>timestamp</th>
+                <th>To Location</th>
+                <th>From Location</th>
+                <th>Quantity Displaced</th>
+                <th>Timestamp</th>
             </thead>
             <tbody>
                 {% for i in movement_info %}
@@ -33,11 +33,10 @@
     </div>
     <div class="col-lg-3">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>warehouse - </b>{{ y }}</li>
+            <li class="list-group-item"><b>Warehouse - </b>{{ y }}</li>
             {% for key, value in res.items() %}
             <li class="list-group-item"><b>{{ key }} - </b>{{ value }}</li>
             {% endfor %}
-
         </ul>
     </div>
 </div>

@@ -4,6 +4,8 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///mydb.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
+
+# databse schema
 class User1(db.Model):
     id = db.Column(db.Integer,primary_key=True, autoincrement=True)
     product_name = db.Column(db.String(200))
@@ -12,13 +14,9 @@ class User1(db.Model):
     warehouse = db.Column(db.String(200))
     movements = db.relationship('Movement', backref="user2")
     
-    
-    
-
 class Location(db.Model):
     id = db.Column(db.Integer,primary_key=True, autoincrement=True)
     location_name = db.Column(db.String(200))
-
 
 class Movement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -27,7 +25,8 @@ class Movement(db.Model):
     from_location = db.Column(db.String(200))
     product_id = db.Column(db.Integer, db.ForeignKey('user1.id'))
     quantity = db.Column(db.Integer)
-    
+
+# function to delete product
 @app.route('/delete_product/<int:id>')
 def delete(id):
     print(id)
@@ -37,6 +36,7 @@ def delete(id):
     db.session.commit()
     return redirect('/')
 
+# function fro report
 @app.route('/report/<int:id>',methods=["GET"])
 def report(id):
     user_info= db.session.query(User1).filter(User1.id == id).all()
@@ -54,8 +54,6 @@ def report(id):
             move_to= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.to_location == i.location_name, Movement.product_id == id).scalar()
             m = move_to - move_from
             final_repo.append(m) 
-            print(m)
-    print(user_info[0].warehouse)
     final_location=[]
     for i in location_info:
         final_location.append(i.location_name)
@@ -66,9 +64,9 @@ def report(id):
             res[key] = value
             final_repo.remove(value)
             break 
-    print(res)
     return render_template('report.html',user_info=user_info,movement_info=movement_info,y=y,final_repo=final_repo,location_info=location_info,res=res)
 
+# function to update product
 @app.route('/update_product/<int:id>',methods=["GET","POST"])
 def update_product(id):
     user = User1.query.get_or_404(id)
@@ -84,6 +82,8 @@ def update_product(id):
         user1s = User1.query.all()
         page ='updatehome'
         return render_template('home.html',page=page,user1s=user1s,user=user)
+
+# function to get details
 @app.route('/',methods=['GET','POST'])
 def get():
     if request.method == "GET":
@@ -103,6 +103,7 @@ def get():
         db.session.commit()
         return redirect('/')
 
+# function to delete location
 @app.route('/delete_location/<int:id>')
 def delete_location(id):
     task_to_delete = Location.query.get_or_404(id)
@@ -110,7 +111,7 @@ def delete_location(id):
     db.session.commit()
     return redirect('/')
 
-
+# function to add location
 @app.route('/add_location',methods=['POST'])
 def add_location():
     location_name= request.form['location_name']
@@ -119,6 +120,7 @@ def add_location():
     db.session.commit()
     return redirect('/')
 
+# function to add movement
 @app.route('/add_movement',methods=['POST'])
 def add_movement():
     timestamp= request.form['timestamp']
@@ -131,6 +133,7 @@ def add_movement():
     db.session.commit()
     return redirect('/')
 
+# function to delete movement
 @app.route('/delete_movement/<int:id>')
 def delete_movement(id):
     task_to_delete = Movement.query.get_or_404(id)
@@ -139,7 +142,6 @@ def delete_movement(id):
     return redirect('/')
 
 
-
-
+# main
 if __name__ == "__main__":
     app.run(debug=True)
