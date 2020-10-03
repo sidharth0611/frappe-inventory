@@ -6,7 +6,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
 
 # databse schema
-class User1(db.Model):
+class Product(db.Model):
     id = db.Column(db.Integer,primary_key=True, autoincrement=True)
     product_name = db.Column(db.String(200))
     product_type = db.Column(db.String(200))
@@ -23,14 +23,14 @@ class Movement(db.Model):
     timestamp = db.Column(db.String(200))
     to_location = db.Column(db.String(200))
     from_location = db.Column(db.String(200))
-    product_id = db.Column(db.Integer, db.ForeignKey('user1.id'))
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     quantity = db.Column(db.Integer)
 
 # function to delete product
 @app.route('/delete_product/<int:id>')
 def delete(id):
     print(id)
-    task_to_delete = User1.query.get_or_404(id)
+    task_to_delete = Product.query.get_or_404(id)
     print(task_to_delete)
     db.session.delete(task_to_delete)
     db.session.commit()
@@ -39,17 +39,17 @@ def delete(id):
 # function fro report
 @app.route('/report/<int:id>',methods=["GET"])
 def report(id):
-    user_info= db.session.query(User1).filter(User1.id == id).all()
+    product_info= db.session.query(Product).filter(Product.id == id).all()
     locations = Location.query.all()
-    location_info= db.session.query(Location).filter(Location.location_name != user_info[0].warehouse).all()
-    movement_info= db.session.query(User1,Movement).filter(Movement.product_id == id, User1.id == id).all()
-    add_from= db.session.query(db.func.sum(Movement.quantity)/2).filter(Movement.from_location == User1.warehouse, Movement.product_id == id).scalar()
-    add_to= db.session.query(db.func.sum(Movement.quantity)/2).filter(Movement.to_location == User1.warehouse, Movement.product_id == id).scalar()
+    location_info= db.session.query(Location).filter(Location.location_name != product_info[0].warehouse).all()
+    movement_info= db.session.query(Product,Movement).filter(Movement.product_id == id, Product.id == id).all()
+    add_from= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.from_location == Product.warehouse, Movement.product_id == id).scalar()
+    add_to= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.to_location == Product.warehouse, Movement.product_id == id).scalar()
     for i in movement_info:
-        y = int(i.User1.quantity) + add_to - add_from
+        y = int(i.Product.quantity) + add_to - add_from
     final_repo=[]
     for i in locations:
-        if i.location_name != user_info[0].warehouse:
+        if i.location_name != product_info[0].warehouse:
             move_from= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.from_location == i.location_name, Movement.product_id == id).scalar()
             move_to= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.to_location == i.location_name, Movement.product_id == id).scalar()
             m = move_to - move_from
@@ -57,19 +57,18 @@ def report(id):
     final_location=[]
     for i in location_info:
         final_location.append(i.location_name)
-    print(final_location)
     res={}
     for key in final_location:
         for value in final_repo:
             res[key] = value
             final_repo.remove(value)
             break 
-    return render_template('report.html',user_info=user_info,movement_info=movement_info,y=y,final_repo=final_repo,location_info=location_info,res=res)
+    return render_template('report.html',product_info=product_info,movement_info=movement_info,y=y,final_repo=final_repo,location_info=location_info,res=res)
 
 # function to update product
 @app.route('/update_product/<int:id>',methods=["GET","POST"])
 def update_product(id):
-    user = User1.query.get_or_404(id)
+    user = Product.query.get_or_404(id)
     if request.method == 'POST':
         user.id = request.form['id']
         user.product_name = request.form['product_name']
@@ -79,7 +78,7 @@ def update_product(id):
         db.session.commit()
         return redirect('/')
     else:
-        user1s = User1.query.all()
+        user1s = Product.query.all()
         page ='updatehome'
         return render_template('home.html',page=page,user1s=user1s,user=user)
 
@@ -87,18 +86,18 @@ def update_product(id):
 @app.route('/',methods=['GET','POST'])
 def get():
     if request.method == "GET":
-        user1s = User1.query.all()
+        user1s = Product.query.all()
         locations = Location.query.all()
-        movements = db.session.query(User1, Movement).filter(User1.id == Movement.product_id ).all()
+        movements = db.session.query(Product, Movement).filter(Product.id == Movement.product_id ).all()
         page ='home'
-        user = User1(id='',product_name='',product_type='',quantity='',warehouse='')
+        user = Product(id='',product_name='',product_type='',quantity='',warehouse='')
         return render_template('home.html',user1s=user1s,locations=locations,movements=movements,page=page,user=user)
     else:
         product_name = request.form['product_name']
         product_type = request.form['product_type']
         quantity = request.form['quantity']
         warehouse = request.form['warehouse']
-        newUser1 = User1(product_name=product_name,product_type=product_type,quantity=quantity,warehouse=warehouse)
+        newUser1 = Product(product_name=product_name,product_type=product_type,quantity=quantity,warehouse=warehouse)
         db.session.add(newUser1)
         db.session.commit()
         return redirect('/')
