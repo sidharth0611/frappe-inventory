@@ -47,8 +47,12 @@ def report(id):
     final_repo=[]
     for i in locations:
         if i.location_name != product_info[0].warehouse:
-            move_from= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.from_location == i.location_name, Movement.product_id == id).scalar()
-            move_to= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.to_location == i.location_name, Movement.product_id == id).scalar()
+            move_from= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.from_location == i.location_name,  Movement.product_id == id).scalar()
+            if move_from == None:
+                move_from = 0
+            move_to= db.session.query(db.func.sum(Movement.quantity)).filter(Movement.to_location == i.location_name,   Movement.product_id == id).scalar()
+            if move_to == None:
+                move_to = 0
             m = move_to - move_from
             warehouse_quant = warehouse_quant - m
             final_repo.append(m) 
@@ -138,6 +142,10 @@ def delete_movement(id):
     db.session.commit()
     return redirect('/')
 
+@app.route('/sales', methods=['GET'])
+def get_sales():
+    products = Product.query.all()
+    return render_template('sales.html',products=products)
 
 # main
 if __name__ == "__main__":
