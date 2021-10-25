@@ -12,7 +12,12 @@ class Product(db.Model):
     product_type = db.Column(db.String(200))
     quantity = db.Column(db.String(200))
     warehouse = db.Column(db.String(200))
-    movements = db.relationship('Movement', backref="user2")
+
+class Sale(db.Model):
+    id = db.Column(db.Integer,primary_key=True, autoincrement=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+    quantity = db.Column(db.String(200))
+    locationid = db.Column(db.Integer, db.ForeignKey('location.id'))
     
 class Location(db.Model):
     id = db.Column(db.Integer,primary_key=True, autoincrement=True)
@@ -145,7 +150,14 @@ def delete_movement(id):
 @app.route('/sales', methods=['GET'])
 def get_sales():
     products = Product.query.all()
+    
     return render_template('sales.html',products=products)
+
+
+
+
+
+
 
 # main
 if __name__ == "__main__":
